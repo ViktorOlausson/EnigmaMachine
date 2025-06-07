@@ -1,4 +1,4 @@
-package com.enigmamachine.gui;
+package com.enigmamachine.enigmawithgui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

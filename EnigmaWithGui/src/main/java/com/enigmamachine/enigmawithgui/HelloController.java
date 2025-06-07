@@ -1,4 +1,4 @@
-package com.enigmamachine.gui;
+package com.enigmamachine.enigmawithgui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

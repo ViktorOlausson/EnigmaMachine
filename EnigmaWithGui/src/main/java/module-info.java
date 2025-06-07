@@ -1,4 +1,4 @@
-module com.enigmamachine.gui {
+module com.enigmamachine.enigmawithgui {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -10,6 +10,6 @@ module com.enigmamachine.gui {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
 
-    opens com.enigmamachine.gui to javafx.fxml;
-    exports com.enigmamachine.gui;
+    opens com.enigmamachine.enigmawithgui to javafx.fxml;
+    exports com.enigmamachine.enigmawithgui;
 }
