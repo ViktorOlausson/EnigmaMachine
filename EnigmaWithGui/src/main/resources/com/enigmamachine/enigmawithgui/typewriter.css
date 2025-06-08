@@ -1,0 +1,15 @@
+.keys{
+    -fx-background-radius: 8;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #fff, #e0e0e0);
+    -fx-border-color: #999;
+    -fx-border-radius: 8;
+    -fx-font-size: 14px;
+}
+
+/* .keys:pressed{
+    -fx-background-color: linear-gradient(#ddd, #bbb);
+} */
+
+.lightUp{
+    -fx-background-color: linear-gradient(#ddd, #bbb);
+}
