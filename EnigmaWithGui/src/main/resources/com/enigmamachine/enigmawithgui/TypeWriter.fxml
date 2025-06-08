@@ -11,6 +11,7 @@
             fx:controller="com.enigmamachine.enigmawithgui.EnigmaController" >
     <top>
         <StackPane>
+            <TextArea fx:id="paper" promptText="Type here…" wrapText="true" styleClass="paper-area" disable="true"/>
         </StackPane>
     </top>
 

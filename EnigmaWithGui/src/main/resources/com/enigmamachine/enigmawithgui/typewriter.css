@@ -13,3 +13,11 @@
 .lightUp{
     -fx-background-color: #cfc100;
 }
+
+.paper-area {
+    -fx-font-family: 'Courier New';
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+    -fx-border-color: #000;
+    -fx-border-width: 4px;
+  }

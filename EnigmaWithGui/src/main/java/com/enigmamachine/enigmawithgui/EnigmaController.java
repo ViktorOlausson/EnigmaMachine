@@ -15,8 +15,10 @@ import java.util.Map;
 
 public class EnigmaController {
     @FXML private GridPane keyboard;
+    @FXML private TextArea paper;
 
     private final Map<String, Button> keyMap = new HashMap<>();
+    private boolean onCooldown = false;
 
     public void initialize(){
         String[][] keyRows = {
@@ -87,11 +89,21 @@ public class EnigmaController {
     }
 
     public void keyLightUp(ActionEvent e, Button b){
-        b.getStyleClass().add("lightUp");
+        if(onCooldown) return;
+        if(!onCooldown && !b.getStyleClass().contains("lightUp")){
+            b.getStyleClass().add("lightUp");
+        }
+        onCooldown = true;
+
+        paper.appendText(b.getText());
         //System.out.println(b.getText());// returns the content of the button(use for enigma integration)
-        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
         pause.setOnFinished(evt -> b.getStyleClass().remove("lightUp"));
         pause.play();
+
+        PauseTransition coolDown = new PauseTransition(Duration.seconds(0.5));
+        coolDown.setOnFinished(evt -> onCooldown = false);
+        coolDown.play();
     }
 
 }
