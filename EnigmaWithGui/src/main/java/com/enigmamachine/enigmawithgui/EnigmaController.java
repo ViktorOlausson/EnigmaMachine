@@ -24,17 +24,24 @@ public class EnigmaController {
         String[][] keyRows = {
                 {"Q","W","E","R","T","Y","U","I","O","P","Å"},
                 {"A","S","D","F","G","H","J","K","L","Ö","Ä"},
-                {"Z","X","C","V","B","N","M",","," + ",".","-"}};
+                {"Z","X","C","V","B","N","M",","," + ",".","-"},
+                {"SPACE"}}; // fix me: space looking fucky whacky
 
         for(int row = 0; row < keyRows.length; row++){
             for(int col = 0; col < keyRows[row].length; col++){
                 String label = keyRows[row][col];
-                Button key = new Button(label);
+                Button key = new Button(label.equals("SPACE") ? " " : label);
                 key.setMinSize(40,40);
                 key.getStyleClass().add("keys");
                 //key.setOnAction(e -> keyLightUp((ActionEvent)e, key));//add function that lights up a key when it is pressed on the keyboard
                 keyboard.add(key, col, row);
-                keyMap.put(label.trim(), key);
+                //keyMap.put(label.trim(), key);
+                if(label.equals("SPACE")){
+                    keyMap.put(" ", key);
+                }
+                else{
+                    keyMap.put(label.trim(), key);
+                }
             }
         }
 
@@ -58,8 +65,8 @@ public class EnigmaController {
                 case PERIOD  -> ".";
                 case PLUS    -> "+";
                 case MINUS   -> "-";
-                case SPACE   -> "";
-                default      -> "";
+                case SPACE   -> " ";
+                default      -> " ";
             };
         }
         Button b = keyMap.get(keyValue);
@@ -77,8 +84,8 @@ public class EnigmaController {
                 case PERIOD  -> ".";
                 case PLUS    -> "+";
                 case MINUS   -> "-";
-                case SPACE   -> "";
-                default      -> "";
+                case SPACE   -> " ";
+                default      -> " ";
             };
         }
         Button b = keyMap.get(keyValue);
@@ -97,7 +104,7 @@ public class EnigmaController {
 
         paper.appendText(b.getText());
         //System.out.println(b.getText());// returns the content of the button(use for enigma integration)
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.4));
         pause.setOnFinished(evt -> b.getStyleClass().remove("lightUp"));
         pause.play();
 
