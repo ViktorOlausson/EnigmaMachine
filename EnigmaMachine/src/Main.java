@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -9,7 +10,7 @@ public class Main {
 
     static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".toCharArray();
 
-    static Map<Character, Character> plugboard(int nrPairs){
+    static Map<Character, Character> generatePlugboard(int nrPairs){
         Map<Character, Character> plugboard = new HashMap<>();
         List<Integer> freeIndexes = new ArrayList<>();
 
@@ -18,9 +19,7 @@ public class Main {
         }
 
         char[] finalCombinations = new char[ALPHABET.length];
-        for(int i = 0; i < ALPHABET.length; i++){
-            finalCombinations[i] = ALPHABET[i];
-        }
+        System.arraycopy(ALPHABET, 0, finalCombinations, 0, ALPHABET.length);
 
         Random rand = new Random();
 
@@ -41,6 +40,22 @@ public class Main {
 
         return plugboard;
     }
+
+    public static char runPlugboard(char letter, Map<Character, Character> plugboard, Boolean isReverse){
+        char newLetter;
+        if(!isReverse){
+            newLetter = plugboard.get(letter);
+        }else {
+            newLetter = '?';
+            for(Map.Entry<Character, Character> entry : plugboard.entrySet()){
+                if(entry.getValue() == letter){
+                    newLetter = entry.getKey();
+                    break;
+                }
+            }
+        }
+        return newLetter;
+    };
     public static void main(String[] args) {
 
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
@@ -52,13 +67,14 @@ public class Main {
                 System.out.print("input a letter to encode: ");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-                String letter = reader.readLine();
+                String input = reader.readLine().toUpperCase();
                 System.out.println();
-                if(letter.equals("")){
+                if(input.equals("")){
                     break;
                 }
                 else{
-                    letter = letter.toUpperCase();
+                    char letter = input.charAt(0);
+                    //letter = letter.toUpperCase();
                     //letter = encodeLetter(letter, plugboard, rotors, reflector); //encode letter
                     //rotor = updateRotors(rotors, rotorsRotation); // update rotor position
                     System.out.println("encoded letter: " + letter + "\n");
