@@ -19,6 +19,7 @@ public class Main {
             "YRUHQSLDPXNGOKMIEBFZCWVJAT", // reflector B
             "FVPJIAOYEDRZXWGCTKUQSBNMHL"  // reflector C
     );
+    public static final Random rand = new Random();
 
     static Map<Character, Character> generatePlugboard(int nrPairs){
         Map<Character, Character> plugboard = new HashMap<>();
@@ -69,7 +70,7 @@ public class Main {
 
     public static List<Map<Character, Character>> createRotors(int nrRotors){
         List<Map<Character, Character>> rotors = new ArrayList<>();
-        Random rand = new Random();
+        //Random rand = new Random();
 
         //System.out.println("\nUsing the following rotor combinations:");
         for(int i = 0; i < nrRotors; i++){
@@ -87,6 +88,21 @@ public class Main {
         }
 
         return rotors;
+    }
+
+    public static Map<Character, Character> createReflector(){
+        Map<Character, Character> reflector = new HashMap<>();
+
+        String randomReflector = POSSIBLE_REFLECTOR_COMBINATIONS.get(rand.nextInt(POSSIBLE_REFLECTOR_COMBINATIONS.size()));
+
+        //System.out.println("\nUsing the following reflector:");
+        //System.out.println(randomReflector);
+
+        for(int i = 0; i < randomReflector.length(); i++){
+            reflector.put(ALPHABET[i], randomReflector.charAt(i));
+        }
+
+        return reflector;
     }
 
     public static void main(String[] args) {
