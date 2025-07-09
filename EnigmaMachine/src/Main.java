@@ -9,6 +9,16 @@ import java.util.*;
 public class Main {
 
     static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".toCharArray();
+    static final String STRING_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
+    static final List<String> POSSIBLE_ROTOR_COMBINATIONS = Arrays.asList(
+            "EKMFLGDQVZNTOWYHXUSPAIBRCJ", // rotor I
+            "AJDKSIRUXBLHWTMCQGZNPYFVOE", // rotor II
+            "BDFHJLCPRTXVZNYEIWGAKMUSQO"  // rotor III
+    );
+    static final List<String> POSSIBLE_REFLECTOR_COMBINATIONS = Arrays.asList(
+            "YRUHQSLDPXNGOKMIEBFZCWVJAT", // reflector B
+            "FVPJIAOYEDRZXWGCTKUQSBNMHL"  // reflector C
+    );
 
     static Map<Character, Character> generatePlugboard(int nrPairs){
         Map<Character, Character> plugboard = new HashMap<>();
@@ -56,6 +66,29 @@ public class Main {
         }
         return newLetter;
     };
+
+    public static List<Map<Character, Character>> createRotors(int nrRotors){
+        List<Map<Character, Character>> rotors = new ArrayList<>();
+        Random rand = new Random();
+
+        //System.out.println("\nUsing the following rotor combinations:");
+        for(int i = 0; i < nrRotors; i++){
+            Map<Character, Character> rotor = new HashMap<>();
+
+            String randomRotor = POSSIBLE_ROTOR_COMBINATIONS.get(rand.nextInt(POSSIBLE_ROTOR_COMBINATIONS.size()));
+
+            //System.out.println(randomRotor);
+
+            for(int j = 0; j < randomRotor.length(); j++){
+                rotor.put(ALPHABET[j], randomRotor.charAt(j));
+            }
+
+            rotors.add(rotor);
+        }
+
+        return rotors;
+    }
+
     public static void main(String[] args) {
 
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
@@ -69,7 +102,7 @@ public class Main {
 
                 String input = reader.readLine().toUpperCase();
                 System.out.println();
-                if(input.equals("")){
+                if(input.isEmpty()){
                     break;
                 }
                 else{
