@@ -8,6 +8,18 @@ import java.util.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
+    public static class EnigmaSetup{
+        public Map<Character, Character> plugboard;
+        public List<Map<Character, Character>> rotors;
+        public Map<Character, Character> reflector;
+
+        public EnigmaSetup(Map<Character, Character> _plugboard, List<Map<Character, Character>> _rotors, Map<Character, Character> _reflector){
+            _plugboard = plugboard;
+            _rotors = rotors;
+            _reflector = reflector;
+        }
+    }
+
     static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".toCharArray();
     static final String STRING_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
     static final List<String> POSSIBLE_ROTOR_COMBINATIONS = Arrays.asList(
@@ -21,33 +33,53 @@ public class Main {
     );
     public static final Random rand = new Random();
 
-    static Map<Character, Character> generatePlugboard(int nrPairs){
+    static Map<Character, Character> generatePlugboard(){
         Map<Character, Character> plugboard = new HashMap<>();
         List<Integer> freeIndexes = new ArrayList<>();
+        List<Character> avalibleLetters = new ArrayList<>();
 
-        for(int i = 0; i < ALPHABET.length; i++){
-            freeIndexes.add(i);
+        for(char C : ALPHABET){
+            avalibleLetters.add(C);
         }
 
-        char[] finalCombinations = new char[ALPHABET.length];
-        System.arraycopy(ALPHABET, 0, finalCombinations, 0, ALPHABET.length);
+        Collections.shuffle(avalibleLetters);
+        int pairs = ALPHABET.length / 2;
 
-        Random rand = new Random();
+        for(int i = 0; i < pairs *2; i += 2){
+            char a = avalibleLetters.get(i);
+            char b = avalibleLetters.get(i + 1);
 
-        while(!freeIndexes.isEmpty() && nrPairs >= 0){
-            nrPairs--;
-
-            int index1 = freeIndexes.remove(rand.nextInt(freeIndexes.size()));
-            int index2 = freeIndexes.remove(rand.nextInt(freeIndexes.size()));
-
-            char temp = finalCombinations[index1];
-            finalCombinations[index1] = finalCombinations[index2];
-            finalCombinations[index2] = temp;
+            plugboard.put(a,b);
+            plugboard.put(b,a);
+        }
+        if (ALPHABET.length % 2 != 0){
+            char leftover = avalibleLetters.get(ALPHABET.length - 1);
+            plugboard.put(leftover, leftover);
         }
 
-        for(int i = 0; i < ALPHABET.length; i++){
-            plugboard.put(ALPHABET[i], finalCombinations[i]);
-        }
+//        for(int i = 0; i < ALPHABET.length; i++){
+//            freeIndexes.add(i);
+//        }
+//
+//        char[] finalCombinations = new char[ALPHABET.length];
+//        System.arraycopy(ALPHABET, 0, finalCombinations, 0, ALPHABET.length);
+//
+//        Random rand = new Random();
+//
+//        while(!freeIndexes.isEmpty() && nrPairs >= 0){
+//            nrPairs--;
+//
+//            int index1 = freeIndexes.remove(rand.nextInt(freeIndexes.size()));
+//            int index2 = freeIndexes.remove(rand.nextInt(freeIndexes.size()));
+//
+//            char temp = finalCombinations[index1];
+//            finalCombinations[index1] = finalCombinations[index2];
+//            finalCombinations[index2] = temp;
+//        }
+//
+//        for(int i = 0; i < ALPHABET.length; i++){
+//            plugboard.put(ALPHABET[i], finalCombinations[i]);
+//        }
 
         return plugboard;
     }
@@ -103,6 +135,16 @@ public class Main {
         }
 
         return reflector;
+    }
+
+    public static EnigmaSetup createEnigmaSetup(int nrRotors){
+        Map<Character, Character> plugboard = generatePlugboard();
+
+        List<Map<Character, Character>> rotors = createRotors(nrRotors);
+
+        Map<Character, Character> reflector = createReflector();
+
+        return new EnigmaSetup(plugboard, rotors, reflector);
     }
 
     public static void main(String[] args) {
