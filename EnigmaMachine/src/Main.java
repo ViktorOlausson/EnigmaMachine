@@ -57,30 +57,6 @@ public class Main {
             plugboard.put(leftover, leftover);
         }
 
-//        for(int i = 0; i < ALPHABET.length; i++){
-//            freeIndexes.add(i);
-//        }
-//
-//        char[] finalCombinations = new char[ALPHABET.length];
-//        System.arraycopy(ALPHABET, 0, finalCombinations, 0, ALPHABET.length);
-//
-//        Random rand = new Random();
-//
-//        while(!freeIndexes.isEmpty() && nrPairs >= 0){
-//            nrPairs--;
-//
-//            int index1 = freeIndexes.remove(rand.nextInt(freeIndexes.size()));
-//            int index2 = freeIndexes.remove(rand.nextInt(freeIndexes.size()));
-//
-//            char temp = finalCombinations[index1];
-//            finalCombinations[index1] = finalCombinations[index2];
-//            finalCombinations[index2] = temp;
-//        }
-//
-//        for(int i = 0; i < ALPHABET.length; i++){
-//            plugboard.put(ALPHABET[i], finalCombinations[i]);
-//        }
-
         return plugboard;
     }
 
@@ -102,15 +78,11 @@ public class Main {
 
     public static List<Map<Character, Character>> createRotors(int nrRotors){
         List<Map<Character, Character>> rotors = new ArrayList<>();
-        //Random rand = new Random();
 
-        //System.out.println("\nUsing the following rotor combinations:");
         for(int i = 0; i < nrRotors; i++){
             Map<Character, Character> rotor = new HashMap<>();
 
             String randomRotor = POSSIBLE_ROTOR_COMBINATIONS.get(rand.nextInt(POSSIBLE_ROTOR_COMBINATIONS.size()));
-
-            //System.out.println(randomRotor);
 
             for(int j = 0; j < randomRotor.length(); j++){
                 rotor.put(ALPHABET[j], randomRotor.charAt(j));
@@ -127,9 +99,6 @@ public class Main {
 
         String randomReflector = POSSIBLE_REFLECTOR_COMBINATIONS.get(rand.nextInt(POSSIBLE_REFLECTOR_COMBINATIONS.size()));
 
-        //System.out.println("\nUsing the following reflector:");
-        //System.out.println(randomReflector);
-
         for(int i = 0; i < randomReflector.length(); i++){
             reflector.put(ALPHABET[i], randomReflector.charAt(i));
         }
@@ -145,6 +114,33 @@ public class Main {
         Map<Character, Character> reflector = createReflector();
 
         return new EnigmaSetup(plugboard, rotors, reflector);
+    }
+
+    public static Character runRotors(Character letter, List<Map<Character, Character>> rotors, Map<Character, Character> reflector){
+        Character newLetter = letter;
+
+        for (Map<Character, Character> rotor : rotors) {
+
+            newLetter = rotor.get(newLetter);
+        }
+
+        newLetter = reflector.get(newLetter);
+
+        for(int i = rotors.size() - 1; i >= 0; i--){
+            Map<Character, Character> rotor = rotors.get(i);
+
+            Character originalLetter = '?';
+
+            for(Map.Entry<Character, Character> entry : rotor.entrySet()){
+                if(entry.getValue().equals(newLetter)){
+                    originalLetter = entry.getKey();
+                    break;
+                }
+            }
+            newLetter = originalLetter;
+        }
+
+        return newLetter;
     }
 
     public static void main(String[] args) {
