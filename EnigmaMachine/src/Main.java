@@ -20,16 +20,40 @@ public class Main {
         }
     }
 
+    public static Map<Character, Character> shiftValues(Map<Character, Character> rotor){
+        Map<Character, Character> shifted = new LinkedHashMap<>();
+
+        List<Character> values = new ArrayList<>(rotor.values());
+        Collections.rotate(values, -1);
+
+        int i = 0;
+        for(Character key : rotor.keySet()){
+            shifted.put(key, values.get(i));
+            i++;
+        }
+
+        return shifted;
+    }
+
     static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".toCharArray();
     static final String STRING_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
     static final List<String> POSSIBLE_ROTOR_COMBINATIONS = Arrays.asList(
-            "EKMFLGDQVZNTOWYHXUSPAIBRCJ", // rotor I
-            "AJDKSIRUXBLHWTMCQGZNPYFVOE", // rotor II
-            "BDFHJLCPRTXVZNYEIWGAKMUSQO"  // rotor III
+            "NZVAYIEÖLWDKCHTGBÅQMOSURFXÄPJ", // rotor I
+            "UÄMRKGBJSPÖLVWQEIAXTYCÅHNDFZO", // rotor II
+            "HTOBRZCÄPMQVGÄXYDFLOJÅUNIKSEW", // rotor III
+            "FRAÖUDBSTVKHMCYÅGNWZPLXEQJIÄO", // rotor IV
+            "WKPVDLQHZMJSAYÅBNFUÖCXTIGREÄO", // rotor V
+            "GTXZBHKQOAÄIMNRCFJDULWEPÖVSÅY", // rotor VI
+            "MLÅÖAVWUTPHEBQKCRDYNJXIGZFSÄO", // rotor VII
+            "CNÖYKUWAQGFZPLVMJDHRBÅIXOESTÄ"  // rotor VIII
     );
     static final List<String> POSSIBLE_REFLECTOR_COMBINATIONS = Arrays.asList(
-            "YRUHQSLDPXNGOKMIEBFZCWVJAT", // reflector B
-            "FVPJIAOYEDRZXWGCTKUQSBNMHL"  // reflector C
+            "VXGJPÖLTBFIUZDÅRWÄNMQCHKEYOSA", // reflector B
+            "YWKBFUEPAHRTCNZMJIQÖVXDGLÅOSÄ", // reflector C
+            "NÖYQVWBTAFJKCÄIXPGURDZEMLHÅOS", // reflector D
+            "AKPMÖÅYLTGHBWDQSNXVJZCREFIUÄOM", // reflector E
+            "ÖJDQZPVTLÅYABSKRXIWNMEUCGFOÄH", // reflector F
+            "ZLRÄMQFSOKYCPWEÅBVHUTXIJNDÖGMA"  // reflector G
     );
     public static final Random rand = new Random();
 
@@ -60,7 +84,7 @@ public class Main {
         return plugboard;
     }
 
-    public static char runPlugboard(char letter, Map<Character, Character> plugboard, Boolean isReverse){
+    public static char runPlugboard(Character letter, Map<Character, Character> plugboard, Boolean isReverse){
         char newLetter;
         if(!isReverse){
             newLetter = plugboard.get(letter);
@@ -143,10 +167,25 @@ public class Main {
         return newLetter;
     }
 
-    public static void main(String[] args) {
+    public static List<Map<Character, Character>> updateRotors(List<Map<Character, Character>> rotors, int[] rotorsRotation){
+        //rotate first rotor
+        rotorsRotation[0]++;
+        rotors.set(0, shiftValues(rotors.get(0)));
 
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it
+        //rotate the other if needed
+        for(int i = 0; i < rotorsRotation.length; i++){
+           if(rotorsRotation[i] % ALPHABET.length == 0 && rotorsRotation[i] != 0){
+               rotorsRotation[i] = 0;
+               if(i + 1 < rotors.size()){
+                   rotorsRotation[i + 1]++;
+                   rotors.set(i + 1, shiftValues(rotors.get(i + 1)));
+               }
+           }
+        }
+        return rotors;
+    }
+
+    public static void main(String[] args) {
 
         while(true){
 
