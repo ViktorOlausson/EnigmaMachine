@@ -84,7 +84,7 @@ public class Main {
         return plugboard;
     }
 
-    public static char runPlugboard(Character letter, Map<Character, Character> plugboard, Boolean isReverse){
+    public static Character runPlugboard(Character letter, Map<Character, Character> plugboard, Boolean isReverse){
         char newLetter;
         if(!isReverse){
             newLetter = plugboard.get(letter);
@@ -183,6 +183,16 @@ public class Main {
            }
         }
         return rotors;
+    }
+
+    public static Character encodedLetter(Character Letter, Map<Character, Character> plugboard, List<Map<Character, Character>> rotors, Map<Character, Character> reflector){
+        Character encodedLetter = Letter;
+
+        encodedLetter = runPlugboard(Letter, plugboard, false);
+        encodedLetter = runRotors(encodedLetter, rotors, reflector);
+        encodedLetter = runPlugboard(encodedLetter, plugboard, true);
+
+        return encodedLetter;
     }
 
     public static void main(String[] args) {
