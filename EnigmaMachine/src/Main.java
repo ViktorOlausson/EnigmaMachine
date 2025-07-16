@@ -14,9 +14,9 @@ public class Main {
         public Map<Character, Character> reflector;
 
         public EnigmaSetup(Map<Character, Character> _plugboard, List<Map<Character, Character>> _rotors, Map<Character, Character> _reflector){
-            _plugboard = plugboard;
-            _rotors = rotors;
-            _reflector = reflector;
+            plugboard = _plugboard;
+            rotors = _rotors;
+            reflector = _reflector;
         }
     }
 
@@ -197,6 +197,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        int nrRotors = 3; //could be a random number
+        int[] rotorRotations = new int[nrRotors];
+
+        EnigmaSetup machine = createEnigmaSetup(nrRotors);
+
         while(true){
 
             try{
@@ -209,10 +214,9 @@ public class Main {
                     break;
                 }
                 else{
-                    char letter = input.charAt(0);
-                    //letter = letter.toUpperCase();
-                    //letter = encodeLetter(letter, plugboard, rotors, reflector); //encode letter
-                    //rotor = updateRotors(rotors, rotorsRotation); // update rotor position
+                    Character letter = input.charAt(0);
+                    letter = encodedLetter(letter ,machine.plugboard, machine.rotors, machine.reflector);
+                    machine.rotors = updateRotors(machine.rotors, rotorRotations);
                     System.out.println("encoded letter: " + letter + "\n");
                 }
             }catch (IOException e){
