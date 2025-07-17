@@ -38,6 +38,7 @@ public class Main {
     static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".toCharArray();
     static final String STRING_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
     static final List<String> POSSIBLE_ROTOR_COMBINATIONS = Arrays.asList(
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
             "NZVAYIEÖLWDKCHTGBÅQMOSURFXÄPJ", // rotor I
             "UÄMRKGBJSPÖLVWQEIAXTYCÅHNDFZO", // rotor II
             "HTOBRZCÄPMQVGÄXYDFLOJÅUNIKSEW", // rotor III
@@ -48,12 +49,13 @@ public class Main {
             "CNÖYKUWAQGFZPLVMJDHRBÅIXOESTÄ"  // rotor VIII
     );
     static final List<String> POSSIBLE_REFLECTOR_COMBINATIONS = Arrays.asList(
-            "VXGJPÖLTBFIUZDÅRWÄNMQCHKEYOSA", // reflector B
-            "YWKBFUEPAHRTCNZMJIQÖVXDGLÅOSÄ", // reflector C
-            "NÖYQVWBTAFJKCÄIXPGURDZEMLHÅOS", // reflector D
-            "AKPMÖÅYLTGHBWDQSNXVJZCREFIUÄOM", // reflector E
-            "ÖJDQZPVTLÅYABSKRXIWNMEUCGFOÄH", // reflector F
-            "ZLRÄMQFSOKYCPWEÅBVHUTXIJNDÖGMA"  // reflector G
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
+            //"AYBRCSDTEUFGVHWIXJZKÅLÄMNÖOP", // Reflector B (P is self-mapped)
+            "AKBNCOEDFPGRHQISJTLUMVWXÅÄÖYZ", // Reflector C (Z is self-mapped)
+            "ÄÅBVDXEWCUGTHSRIQPOJLMNÖYKZFA", // Reflector D (A is self-mapped)
+            "ABCPDEFGHIJKLMNOQRSTUVWXÖÅYZÄ", // Reflector E (Ä is self-mapped)
+            "LZKÄYÜONWXPQIJMHGÖRBCSTUVÅDEA", // Reflector F (A is self-mapped)
+            "BCAEDFGHIJKLÅMNOPQRÖSTUVWXÄYZ"  // Reflector G (Z is self-mapped)
     );
     public static final Random rand = new Random();
 
@@ -87,17 +89,16 @@ public class Main {
     public static Character runPlugboard(Character letter, Map<Character, Character> plugboard, Boolean isReverse){
         char newLetter;
         if(!isReverse){
-            newLetter = plugboard.get(letter);
+            return plugboard.get(letter);
         }else {
-            newLetter = '?';
+            //newLetter = '?';
             for(Map.Entry<Character, Character> entry : plugboard.entrySet()){
-                if(entry.getValue() == letter){
-                    newLetter = entry.getKey();
-                    break;
+                if(entry.getValue().equals(letter)){
+                    return entry.getKey();
                 }
             }
         }
-        return newLetter;
+        return '?';
     };
 
     public static List<Map<Character, Character>> createRotors(int nrRotors){
@@ -120,11 +121,24 @@ public class Main {
 
     public static Map<Character, Character> createReflector(){
         Map<Character, Character> reflector = new HashMap<>();
+        List<Character> letters = new ArrayList<>();
 
-        String randomReflector = POSSIBLE_REFLECTOR_COMBINATIONS.get(rand.nextInt(POSSIBLE_REFLECTOR_COMBINATIONS.size()));
+        for(char c : ALPHABET){
+            letters.add(c);
+        }
 
-        for(int i = 0; i < randomReflector.length(); i++){
-            reflector.put(ALPHABET[i], randomReflector.charAt(i));
+        Collections.shuffle(letters);
+
+        for(int i = 0; i + 1 < letters.size(); i += 2){
+            char a = letters.get(i);
+            char b = letters.get(i + 1);
+            reflector.put(a, b);
+            reflector.put(b, a);
+        }
+
+        if (letters.size() % 2 != 0) {
+            char last = letters.get(letters.size() - 1);
+            reflector.put(last, last);
         }
 
         return reflector;
