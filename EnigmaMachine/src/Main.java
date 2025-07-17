@@ -39,23 +39,22 @@ public class Main {
     static final String STRING_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
     static final List<String> POSSIBLE_ROTOR_COMBINATIONS = Arrays.asList(
             "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
-            "NZVAYIEÖLWDKCHTGBÅQMOSURFXÄPJ", // rotor I
-            "UÄMRKGBJSPÖLVWQEIAXTYCÅHNDFZO", // rotor II
-            "HTOBRZCÄPMQVGÄXYDFLOJÅUNIKSEW", // rotor III
-            "FRAÖUDBSTVKHMCYÅGNWZPLXEQJIÄO", // rotor IV
-            "WKPVDLQHZMJSAYÅBNFUÖCXTIGREÄO", // rotor V
-            "GTXZBHKQOAÄIMNRCFJDULWEPÖVSÅY", // rotor VI
-            "MLÅÖAVWUTPHEBQKCRDYNJXIGZFSÄO", // rotor VII
-            "CNÖYKUWAQGFZPLVMJDHRBÅIXOESTÄ"  // rotor VIII
+            "NZVAYIEÖLWDKCHTGBÅQMOSURFXÄPJ",
+            "HTOBRZCÄPMQVGÄXYDFLOJÅUNIKSEW",
+            "UÄMRKGBJSPÖLVWQEIAXTYCÅHNDFZO",
+            "FRAÖUDBSTVKHMCYÅGNWZPLXEQJIÄO",
+            "WKPVDLQHZMJSAYÅBNFUÖCXTIGREÄO",
+            "GTXZBHKQOAÄIMNRCFJDULWEPÖVSÅY",
+            "MLÅÖAVWUTPHEBQKCRDYNJXIGZFSÄO",
+            "CNÖYKUWAQGFZPLVMJDHRBÅIXOESTÄ"
     );
     static final List<String> POSSIBLE_REFLECTOR_COMBINATIONS = Arrays.asList(
             "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
-            //"AYBRCSDTEUFGVHWIXJZKÅLÄMNÖOP", // Reflector B (P is self-mapped)
-            "AKBNCOEDFPGRHQISJTLUMVWXÅÄÖYZ", // Reflector C (Z is self-mapped)
-            "ÄÅBVDXEWCUGTHSRIQPOJLMNÖYKZFA", // Reflector D (A is self-mapped)
-            "ABCPDEFGHIJKLMNOQRSTUVWXÖÅYZÄ", // Reflector E (Ä is self-mapped)
-            "LZKÄYÜONWXPQIJMHGÖRBCSTUVÅDEA", // Reflector F (A is self-mapped)
-            "BCAEDFGHIJKLÅMNOPQRÖSTUVWXÄYZ"  // Reflector G (Z is self-mapped)
+            "AKBNCOEDFPGRHQISJTLUMVWXÅÄÖYZ",
+            "ÄÅBVDXEWCUGTHSRIQPOJLMNÖYKZFA",
+            "ABCPDEFGHIJKLMNOQRSTUVWXÖÅYZÄ",
+            "LZKÄYÜONWXPQIJMHGÖRBCSTUVÅDEA",
+            "BCAEDFGHIJKLÅMNOPQRÖSTUVWXÄYZ"
     );
     public static final Random rand = new Random();
 
