@@ -176,13 +176,22 @@ public class EnigmaController {
 
             Character originalLetter = '?';
 
-            for(Map.Entry<Character, Character> entry : rotor.entrySet()){
-                if(entry.getValue().equals(newLetter)){
-                    originalLetter = entry.getKey();
-                    break;
-                }
-            }
-            newLetter = originalLetter;
+//            for(Map.Entry<Character, Character> entry : rotor.entrySet()){
+//                if(entry.getValue().equals(newLetter)){
+//                    originalLetter = entry.getKey();
+//                    break;
+//                }
+//            }
+//            newLetter = originalLetter;
+            Character finalNewLetter = newLetter;
+            Character reversed = rotor.entrySet()
+                    .stream()
+                    .filter(e -> e.getValue().equals(finalNewLetter))
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse('?');
+
+            newLetter = reversed;
         }
 
         return newLetter;
@@ -220,6 +229,18 @@ public class EnigmaController {
     private final Map<String, Button> keyMap = new HashMap<>();
     private boolean onCooldown = false;
 
+    int nrRotors = 3;
+    int[] rotorRotations = new int[nrRotors];
+    EnigmaSetup machine = createEnigmaSetup(nrRotors);
+
+    public Character runEnigmaMachine(Character letter){
+        Character returnValue = letter;
+        returnValue = encodedLetter(returnValue ,machine.plugboard, machine.rotors, machine.reflector);
+        machine.rotors = updateRotors(machine.rotors, rotorRotations);
+
+        return returnValue;
+    }
+
     public void initialize(){
         String[][] keyRows = {
                 {"Q","W","E","R","T","Y","U","I","O","P","Å"},
@@ -256,8 +277,31 @@ public class EnigmaController {
         });
     }
 
+    public boolean containsLetter(String charToCheck){
+        boolean result = true;
+
+        switch (charToCheck){
+            case ",", ".", "+", "-", " " -> result = false;
+            default -> result = true;
+        }
+
+        return result;
+    }
+
     public void findPressedKey(KeyEvent e){
         String keyValue = e.getText().toUpperCase();
+
+        //Character encodedKeyValue = runEnigmaMachine(keyValue.charAt(0));
+
+        if(containsLetter(keyValue)){
+            Character encodedKeyValue = runEnigmaMachine(keyValue.charAt(0));
+            Button b = keyMap.get(encodedKeyValue.toString());
+            if (b != null){
+                keyLightUp(new ActionEvent(e.getSource(), e.getTarget()), b);
+            }
+        }
+
+        //System.out.println(encodedKeyValue);
 
         if(keyValue.isEmpty()){
             keyValue = switch (e.getCode()){
@@ -275,36 +319,19 @@ public class EnigmaController {
         }
     }
 
-    public void findRealesedKey(KeyEvent e){
-        String keyValue = e.getText().toUpperCase();
-
-        if(keyValue.isEmpty()){
-            keyValue = switch (e.getCode()){
-                case COMMA   -> ",";
-                case PERIOD  -> ".";
-                case PLUS    -> "+";
-                case MINUS   -> "-";
-                case SPACE   -> " ";
-                default      -> " ";
-            };
-        }
-        Button b = keyMap.get(keyValue);
-        if (b != null){
-            //keyLightUp(new ActionEvent(e.getSource(), e.getTarget()), b);
-            b.getStyleClass().remove("lightUp");
-        }
-    }
-
-    public void keyLightUp(ActionEvent e, Button b){
+    public void keyLightUp(ActionEvent e, Button b){ //rename this: this contains all logic basicly, running enigma encoding
+        String btnChar = b.getText();
         if(onCooldown) return;
-        if(!onCooldown && !b.getStyleClass().contains("lightUp")){
+        if(!b.getStyleClass().contains("lightUp")){
             b.getStyleClass().add("lightUp");
         }
         onCooldown = true;
 
-        paper.appendText(b.getText());
+        //System.out.println(btnChar);
+
+        paper.appendText(btnChar);
         //System.out.println(b.getText());// returns the content of the button(use for enigma integration)
-        PauseTransition pause = new PauseTransition(Duration.seconds(0.4));
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.25));
         pause.setOnFinished(evt -> b.getStyleClass().remove("lightUp"));
         pause.play();
 
