@@ -60,7 +60,7 @@ public class Main {
 
     static Map<Character, Character> generatePlugboard(){
         Map<Character, Character> plugboard = new HashMap<>();
-        List<Integer> freeIndexes = new ArrayList<>();
+        //List<Integer> freeIndexes = new ArrayList<>();
         List<Character> avalibleLetters = new ArrayList<>();
 
         for(char C : ALPHABET){
@@ -168,13 +168,22 @@ public class Main {
 
             Character originalLetter = '?';
 
-            for(Map.Entry<Character, Character> entry : rotor.entrySet()){
-                if(entry.getValue().equals(newLetter)){
-                    originalLetter = entry.getKey();
-                    break;
-                }
-            }
-            newLetter = originalLetter;
+//            for(Map.Entry<Character, Character> entry : rotor.entrySet()){
+//                if(entry.getValue().equals(newLetter)){
+//                    originalLetter = entry.getKey();
+//                    break;
+//                }
+//            }
+//            newLetter = originalLetter;
+            Character finalNewLetter = newLetter;
+            Character reversed = rotor.entrySet()
+                    .stream()
+                    .filter(e -> e.getValue().equals(finalNewLetter))
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse('?');
+
+            newLetter = reversed;
         }
 
         return newLetter;
