@@ -68,7 +68,6 @@ public class EnigmaController {
 
     static Map<Character, Character> generatePlugboard(){
         Map<Character, Character> plugboard = new HashMap<>();
-        List<Integer> freeIndexes = new ArrayList<>();
         List<Character> avalibleLetters = new ArrayList<>();
 
         for(char C : ALPHABET){
@@ -97,7 +96,6 @@ public class EnigmaController {
         if(!isReverse){
             return plugboard.get(letter);
         }else {
-            //newLetter = '?';
             for(Map.Entry<Character, Character> entry : plugboard.entrySet()){
                 if(entry.getValue().equals(letter)){
                     return entry.getKey();
@@ -173,24 +171,14 @@ public class EnigmaController {
         for(int i = rotors.size() - 1; i >= 0; i--){
             Map<Character, Character> rotor = rotors.get(i);
 
-            Character originalLetter = '?';
-
-//            for(Map.Entry<Character, Character> entry : rotor.entrySet()){
-//                if(entry.getValue().equals(newLetter)){
-//                    originalLetter = entry.getKey();
-//                    break;
-//                }
-//            }
-//            newLetter = originalLetter;
             Character finalNewLetter = newLetter;
-            Character reversed = rotor.entrySet()
+
+            newLetter = rotor.entrySet()
                     .stream()
                     .filter(e -> e.getValue().equals(finalNewLetter))
                     .map(Map.Entry::getKey)
                     .findFirst()
                     .orElse('?');
-
-            newLetter = reversed;
         }
 
         return newLetter;
@@ -245,7 +233,7 @@ public class EnigmaController {
                 {"Q","W","E","R","T","Y","U","I","O","P","Å"},
                 {"A","S","D","F","G","H","J","K","L","Ö","Ä"},
                 {"Z","X","C","V","B","N","M",","," + ",".","-"},
-                {"SPACE"}}; // fix me: space looking fucky whacky
+                {"SPACE"}}; // fix me: space looking fucky whacky, add following keys: "?"
 
         for(int row = 0; row < keyRows.length; row++){
             for(int col = 0; col < keyRows[row].length; col++){
@@ -253,9 +241,7 @@ public class EnigmaController {
                 Button key = new Button(label.equals("SPACE") ? " " : label);
                 key.setMinSize(40,40);
                 key.getStyleClass().add("keys");
-                //key.setOnAction(e -> keyLightUp((ActionEvent)e, key));//add function that lights up a key when it is pressed on the keyboard
                 keyboard.add(key, col, row);
-                //keyMap.put(label.trim(), key);
                 if(label.equals("SPACE")){
                     keyMap.put(" ", key);
                 }
@@ -268,8 +254,6 @@ public class EnigmaController {
         keyboard.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if(newScene != null){
                 newScene.addEventFilter(KeyEvent.KEY_PRESSED, this::findPressedKey);
-
-                //newScene.addEventHandler(KeyEvent.KEY_RELEASED, this::findRealesedKey);
 
                 keyboard.requestFocus();
             }
@@ -288,19 +272,15 @@ public class EnigmaController {
     }
 
     public void findPressedKey(KeyEvent e){
-        String keyValue = e.getText().toUpperCase();
-
-        //Character encodedKeyValue = runEnigmaMachine(keyValue.charAt(0));
+        String keyValue = e.getText();
 
         if(containsLetter(keyValue)){
-            Character encodedKeyValue = runEnigmaMachine(keyValue.charAt(0));
+            Character encodedKeyValue = runEnigmaMachine(keyValue.toUpperCase().charAt(0));
             Button b = keyMap.get(encodedKeyValue.toString());
             if (b != null){
-                keyLightUp(new ActionEvent(e.getSource(), e.getTarget()), b);
+                keyLightUp(b);
             }
         }
-
-        //System.out.println(encodedKeyValue);
 
         if(keyValue.isEmpty()){
             keyValue = switch (e.getCode()){
@@ -314,11 +294,11 @@ public class EnigmaController {
         }
         Button b = keyMap.get(keyValue);
         if (b != null){
-            keyLightUp(new ActionEvent(e.getSource(), e.getTarget()), b);
+            keyLightUp(b);
         }
     }
 
-    public void keyLightUp(ActionEvent e, Button b){ //rename this: this contains all logic basicly, running enigma encoding
+    public void keyLightUp(Button b){
         String btnChar = b.getText();
         if(onCooldown) return;
         if(!b.getStyleClass().contains("lightUp")){
@@ -326,10 +306,7 @@ public class EnigmaController {
         }
         onCooldown = true;
 
-        //System.out.println(btnChar);
-
         paper.appendText(btnChar);
-        //System.out.println(b.getText());// returns the content of the button(use for enigma integration)
         PauseTransition pause = new PauseTransition(Duration.seconds(0.25));
         pause.setOnFinished(evt -> b.getStyleClass().remove("lightUp"));
         pause.play();
