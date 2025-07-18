@@ -94,7 +94,6 @@ public class EnigmaController {
     }
 
     public static Character runPlugboard(Character letter, Map<Character, Character> plugboard, Boolean isReverse){
-        char newLetter;
         if(!isReverse){
             return plugboard.get(letter);
         }else {
