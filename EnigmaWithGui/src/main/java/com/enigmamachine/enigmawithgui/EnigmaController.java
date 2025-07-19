@@ -260,15 +260,19 @@ public class EnigmaController {
         });
     }
 
-    public boolean containsLetter(String charToCheck){
-        switch (charToCheck){
-            case ",", ".", "+", "-", " " -> {
-                return false;
-            }
-            default -> {
-                return true;
-            }
-        }
+//    public boolean containsLetter(String charToCheck){
+//        switch (charToCheck){
+//            case ",", ".", "+", "-", " " -> {
+//                return false;
+//            }
+//            default -> {
+//                return true;
+//            }
+//        }
+//    }
+
+    public boolean containsLetter(String charToCheck){ // containsLetter 2.0
+        return STRING_ALPHABET.contains(charToCheck.toUpperCase());
     }
 
     public void findPressedKey(KeyEvent e){

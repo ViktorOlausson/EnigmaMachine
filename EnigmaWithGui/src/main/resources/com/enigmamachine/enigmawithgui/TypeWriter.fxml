@@ -10,7 +10,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8"
             fx:controller="com.enigmamachine.enigmawithgui.EnigmaController" >
     <top>
-        <StackPane>
+        <StackPane> <!-- fix so i can copy this: -->
             <TextArea fx:id="paper" promptText="Type here…" wrapText="true" styleClass="paper-area" disable="true"/>
         </StackPane>
     </top>
