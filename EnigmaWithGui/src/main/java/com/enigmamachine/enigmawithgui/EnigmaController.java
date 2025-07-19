@@ -43,10 +43,11 @@ public class EnigmaController {
         return shifted;
     }
 
-    static final char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".toCharArray();
     static final String STRING_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
+    static final char[] ALPHABET = STRING_ALPHABET.toCharArray();
+
     static final List<String> POSSIBLE_ROTOR_COMBINATIONS = Arrays.asList(
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
+            //"ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
             "NZVAYIEÖLWDKCHTGBÅQMOSURFXÄPJ",
             "HTOBRZCÄPMQVGÄXYDFLOJÅUNIKSEW",
             "UÄMRKGBJSPÖLVWQEIAXTYCÅHNDFZO",
@@ -57,7 +58,7 @@ public class EnigmaController {
             "CNÖYKUWAQGFZPLVMJDHRBÅIXOESTÄ"
     );
     static final List<String> POSSIBLE_REFLECTOR_COMBINATIONS = Arrays.asList(
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
+            //"ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ",
             "AKBNCOEDFPGRHQISJTLUMVWXÅÄÖYZ",
             "ÄÅBVDXEWCUGTHSRIQPOJLMNÖYKZFA",
             "ABCPDEFGHIJKLMNOQRSTUVWXÖÅYZÄ",
@@ -123,26 +124,37 @@ public class EnigmaController {
         return rotors;
     }
 
-    public static Map<Character, Character> createReflector(){
+//    public static Map<Character, Character> createReflector(){
+//        Map<Character, Character> reflector = new HashMap<>();
+//        List<Character> letters = new ArrayList<>();
+//
+//        for(char c : ALPHABET){
+//            letters.add(c);
+//        }
+//
+//        Collections.shuffle(letters);
+//
+//        for(int i = 0; i + 1 < letters.size(); i += 2){
+//            char a = letters.get(i);
+//            char b = letters.get(i + 1);
+//            reflector.put(a, b);
+//            reflector.put(b, a);
+//        }
+//
+//        if (letters.size() % 2 != 0) {
+//            char last = letters.get(letters.size() - 1);
+//            reflector.put(last, last);
+//        }
+//
+//        return reflector;
+//    }
+
+    public static Map<Character, Character> createReflector(){ // createReflector 2.0
         Map<Character, Character> reflector = new HashMap<>();
-        List<Character> letters = new ArrayList<>();
+        String reflectorString = POSSIBLE_REFLECTOR_COMBINATIONS.get(rand.nextInt(POSSIBLE_REFLECTOR_COMBINATIONS.size()));
 
-        for(char c : ALPHABET){
-            letters.add(c);
-        }
-
-        Collections.shuffle(letters);
-
-        for(int i = 0; i + 1 < letters.size(); i += 2){
-            char a = letters.get(i);
-            char b = letters.get(i + 1);
-            reflector.put(a, b);
-            reflector.put(b, a);
-        }
-
-        if (letters.size() % 2 != 0) {
-            char last = letters.get(letters.size() - 1);
-            reflector.put(last, last);
+        for(int i = 0; i < STRING_ALPHABET.length(); i++){
+            reflector.put(STRING_ALPHABET.charAt(i),reflectorString.charAt(i));
         }
 
         return reflector;
@@ -260,17 +272,6 @@ public class EnigmaController {
             }
         });
     }
-
-//    public boolean containsLetter(String charToCheck){
-//        switch (charToCheck){
-//            case ",", ".", "+", "-", " " -> {
-//                return false;
-//            }
-//            default -> {
-//                return true;
-//            }
-//        }
-//    }
 
     public boolean containsLetter(String charToCheck){ // containsLetter 2.0
         return STRING_ALPHABET.contains(charToCheck.toUpperCase());
