@@ -251,14 +251,32 @@ public class EnigmaController {
         for(int row = 0; row < keyRows.length; row++){
             for(int col = 0; col < keyRows[row].length; col++){
                 String label = keyRows[row][col];
-                Button key = new Button(label.equals("SPACE") ? " " : label);
-                key.setMinSize(40,40);
-                key.getStyleClass().add("keys");
-                keyboard.add(key, col, row);
-                if(label.equals("SPACE")){
-                    keyMap.put(" ", key);
-                }
-                else{
+//                Button key = new Button(label.equals("SPACE") ? " " : label);
+//                key.setMinSize(40,40);
+//                key.getStyleClass().add("keys");
+//                keyboard.add(key, col, row);
+//                if(label.equals("SPACE")){
+//                    keyMap.put(" ", key);
+//                }
+//                else{
+//                    keyMap.put(label.trim(), key);
+//                }
+                if (label.equals("SPACE")) {
+                    Button spaceKey = new Button(" ");
+                    spaceKey.setMinSize(200, 40); // make it visually wider
+                    spaceKey.getStyleClass().add("keys");
+
+                    int spaceColSpan = 5; // how many columns it spans
+                    int totalCols = 11; // match with number of keys in other rows
+                    int colStart = (totalCols - spaceColSpan) / 2; // center it
+
+                    keyboard.add(spaceKey, colStart, row, spaceColSpan, 1); // add with colspan
+                    keyMap.put(" ", spaceKey);
+                } else {
+                    Button key = new Button(label);
+                    key.setMinSize(40, 40);
+                    key.getStyleClass().add("keys");
+                    keyboard.add(key, col, row);
                     keyMap.put(label.trim(), key);
                 }
             }
