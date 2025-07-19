@@ -232,7 +232,7 @@ public class EnigmaController {
         String[][] keyRows = {
                 {"Q","W","E","R","T","Y","U","I","O","P","Å"},
                 {"A","S","D","F","G","H","J","K","L","Ö","Ä"},
-                {"Z","X","C","V","B","N","M",","," + ",".","-"},
+                {"Z","X","C","V","B","N","M",",","+",".","-"},
                 {"SPACE"}}; // fix me: space looking fucky whacky, add following keys: "?"
 
         for(int row = 0; row < keyRows.length; row++){
@@ -261,14 +261,14 @@ public class EnigmaController {
     }
 
     public boolean containsLetter(String charToCheck){
-        boolean result = true;
-
         switch (charToCheck){
-            case ",", ".", "+", "-", " " -> result = false;
-            default -> result = true;
+            case ",", ".", "+", "-", " " -> {
+                return false;
+            }
+            default -> {
+                return true;
+            }
         }
-
-        return result;
     }
 
     public void findPressedKey(KeyEvent e){
@@ -289,7 +289,7 @@ public class EnigmaController {
                 case PLUS    -> "+";
                 case MINUS   -> "-";
                 case SPACE   -> " ";
-                default      -> " ";
+                default      -> "";
             };
         }
         Button b = keyMap.get(keyValue);
@@ -311,7 +311,7 @@ public class EnigmaController {
         pause.setOnFinished(evt -> b.getStyleClass().remove("lightUp"));
         pause.play();
 
-        PauseTransition coolDown = new PauseTransition(Duration.seconds(0.5));
+        PauseTransition coolDown = new PauseTransition(Duration.seconds(0.25));
         coolDown.setOnFinished(evt -> onCooldown = false);
         coolDown.play();
     }
